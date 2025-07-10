@@ -1,0 +1,11 @@
+﻿Test Case ID,Description,Input Params,Expected Output,Type,Remarks
+TC001,FLAT 20Rs discount applied for segment p1,"user_id=1, segment=p1, cart_value=200, offer_type=FLATX, offer_value=20",final_price = 180,Positive,
+TC002,10% discount applied for segment p1,"user_id=1, segment=p1, cart_value=200, offer_type=FLATX%, offer_value=10",final_price = 180,Positive,
+TC003,No offer available for segment,"user_id=2, segment=p2, cart_value=200",final_price = 200,Negative,
+TC004,Offer exists but not for this segment,"user_id=3, segment=p3, offer for p1 only",final_price = 200,Negative,
+TC005,Both FLATX and FLATX% exist best discount applied,"user_id=2, segment=p2, cart_value=200, FLATX=30, FLATX%=20%",final_price = 160,Positive,"Bug: FLATX% applied, FLATX ignored"
+TC006,Zero cart value no discount applied,"user_id=1, segment=p1, cart_value=0",final_price = 0,Edge,Bug: Discount incorrectly applied to 0 cart value
+TC007,Unknown segment from Mock API,"user_id=99, segment not returned",final_price = 200,Negative,
+TC008,MockServer returns 500 error,"user_id=1, segment API down","error handled gracefully, default price shown",Negative,
+TC009,High cart value with 60% FLATX% discount,"user_id=3, segment=p3, cart_value=9999, offer_value=60%",final_price = 4999,Edge,Bug: Precision lost due to integer truncation
+TC010,FLAT 10Rs discount applied for segment p2 and user_id 3,"user_id=3, segment=p2, cart_value=200",final_price = 200,Negative,
